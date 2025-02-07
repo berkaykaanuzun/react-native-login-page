@@ -10,8 +10,12 @@ import {
 import { Image } from "expo-image";
 import { CustomTextInput } from "@/components/CustomTextInput";
 import { router } from "expo-router";
+import { useState } from "react";
+import SelectPhoto from "@/components/SelectPhoto";
+import CustomBottomSheet from "@/components/CustomBottomSheet";
 
 export default function Register() {
+    const [image, setImage] = useState<string | null>(null);
   const handleBackPress = () => {
     router.back();
   };
@@ -37,22 +41,19 @@ export default function Register() {
           </TouchableOpacity>
           <View className="pt-20 px-page">
             <View className=" rounded-full overflow-hidden self-center">
-              <TouchableOpacity>
-                <Image
-                  source={require("../assets/images/placeholder-user.jpg")}
-                  style={{ width: 95, height: 95 }}
-                />
-              </TouchableOpacity>
+             <SelectPhoto image={image} setImage={setImage} />
             </View>
             <Text className="text-white text-center font-latoBold text-title mt-[40px]">
-              Welcome again, Berkay Kaan Uzun
+              Welcome Berkay Kaan Uzun
             </Text>
             <Text className="text-white text-center font-lato text-input text-sm  mt-[15px] mb-10">
               Please Log into your existing account
             </Text>
             <View className="mt-10 gap-3">
-              <CustomTextInput placeholder="Your Email" />
-              <CustomTextInput placeholder="Your Password" />
+              <CustomTextInput placeholder="Name Surname" />
+              <CustomTextInput placeholder="phone" />
+              <CustomTextInput placeholder="Email" />
+              <CustomTextInput placeholder="Password" />
             </View>
             <View className="mt-10 gap-5">
               <TouchableOpacity className="rounded-full bg-white py-4">
@@ -60,18 +61,12 @@ export default function Register() {
                   Sign Up
                 </Text>
               </TouchableOpacity>
-              <View className=" mt-5">
-                <Text className="text-white text-center mt-3">
-                  Forget your password?
-                </Text>
-                <Text className="font-latoBold text-white text-center text-lg">
-                  Click Here
-                </Text>
-              </View>
             </View>
           </View>
         </View>
+        <CustomBottomSheet />
       </SafeAreaView>
+     
     </View>
   );
 }
