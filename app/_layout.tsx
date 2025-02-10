@@ -18,6 +18,7 @@ import {
   Lato_300Light,
 } from "@expo-google-fonts/lato";
 import "../global.css";
+import { PortalProvider } from "@gorhom/portal";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -43,17 +44,21 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{
-        headerShown: false,
-        header: () => null,
-        contentStyle: { backgroundColor: 'transparent' }
-      }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="(login)" />
-        <Stack.Screen name="(register)" />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="light" />
+      <PortalProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            header: () => null,
+            contentStyle: { backgroundColor: "transparent" },
+          }}
+        >
+          <Stack.Screen name="index" />
+          <Stack.Screen name="(login)" />
+          <Stack.Screen name="(register)" />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style="light" />
+      </PortalProvider>
     </ThemeProvider>
   );
 }

@@ -10,10 +10,33 @@ import {
 import { Image } from "expo-image";
 import { CustomTextInput } from "@/components/CustomTextInput";
 import { router } from "expo-router";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const schema = yup.object({
+  email: yup.string().email("Invalid email").required("Email is required"),
+  password: yup.string().required("Password is required"),
+});
+
+type LoginFormData = yup.InferType<typeof schema>;
 
 export default function Login() {
+  const { control, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      email: "",
+      password: ""
+    }
+  });
+
   const handleRegisterPress = () => {
     router.push("/register");
+  };
+
+  const onSubmit = (data: LoginFormData) => {
+    console.log('Login Form Data:', data);
+    // Handle login submission
   };
 
   return (
@@ -43,11 +66,25 @@ export default function Login() {
             Please Log into your existing account
           </Text>
           <View className="mt-10 gap-3">
-            <CustomTextInput placeholder="Your Email" />
-            <CustomTextInput placeholder="Your Password" />
+            <CustomTextInput<LoginFormData>
+              control={control}
+              name="email"
+              placeholder="Your Email"
+              error={errors.email?.message}
+            />
+            <CustomTextInput<LoginFormData>
+              control={control}
+              name="password"
+              placeholder="Your Password"
+              secureTextEntry
+              error={errors.password?.message}
+            />
           </View>
           <View className="mt-10 gap-5">
-            <TouchableOpacity className="rounded-full bg-white py-4">
+            <TouchableOpacity 
+              className="rounded-full bg-white py-4"
+              onPress={handleSubmit(onSubmit)}
+            >
               <Text className="text-black text-center font-latoBold text-label">
                 Login
               </Text>
@@ -62,10 +99,10 @@ export default function Login() {
             </View>
           </View>
           <TouchableOpacity 
-            className="rounded-full bg-black py-4"
+            className="rounded-full bg-black py-4 mt-5"
             onPress={handleRegisterPress}
           >
-            <Text className="text-white text-center font-latoBold text-label">
+            <Text className="text-white text-center font-latoBold text-label " >
               Register
             </Text>
           </TouchableOpacity>
